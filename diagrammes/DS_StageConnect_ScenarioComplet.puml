@@ -1,0 +1,78 @@
+@startuml
+title DS - Scénario complet StageConnect : recherche et candidature à une offre
+
+actor "Étudiant" as Etudiant
+participant "Main.java" as Main
+participant "Utilisateur" as Utilisateur
+participant "GestionOffres" as GestionOffres
+participant "OffreStage" as OffreStage
+participant "Candidature" as Candidature
+participant "Entreprise" as Entreprise
+participant "Administrateur" as Admin
+participant "TableauDeBordAdmin" as Dashboard
+
+== Inscription et authentification ==
+
+Etudiant -> Main : lancer l'application
+Main -> Utilisateur : sInscrire(nom, email, motDePasse)
+Utilisateur --> Main : compte créé
+
+Main -> Utilisateur : seConnecter(email, motDePasse)
+
+alt Identifiants corrects
+    Utilisateur --> Main : utilisateur connecté
+else Identifiants incorrects
+    Utilisateur --> Main : erreur de connexion
+end
+
+== Recherche des offres de stage ==
+
+Etudiant -> Main : rechercher un stage par lieu
+Main -> GestionOffres : rechercherParLieu("Tunis")
+
+loop Pour chaque offre disponible
+    GestionOffres -> OffreStage : getLieu()
+    OffreStage --> GestionOffres : lieu
+end
+
+GestionOffres --> Main : liste des offres trouvées
+Main --> Etudiant : afficher les offres disponibles
+
+== Candidature à une offre ==
+
+Etudiant -> Main : postuler à une offre
+Main -> Candidature : new Candidature(etudiant, offre)
+Candidature --> Main : candidature créée avec statut "En attente"
+
+Main -> OffreStage : ajouterCandidature(candidature)
+OffreStage --> Main : candidature ajoutée
+
+Main -> Etudiant : ajouterCandidature(candidature)
+Etudiant --> Main : candidature enregistrée
+
+== Consultation par l'entreprise ==
+
+Entreprise -> Main : consulter les candidatures reçues
+Main -> OffreStage : afficher les candidatures
+OffreStage -> Candidature : afficher()
+Candidature --> OffreStage : détails candidature
+OffreStage --> Main : candidatures affichées
+
+== Décision sur la candidature ==
+
+Entreprise -> Main : accepter la candidature
+Main -> Candidature : accepter()
+Candidature --> Main : statut = "Acceptée"
+
+Main --> Etudiant : notification candidature acceptée
+
+== Tableau de bord administrateur ==
+
+Admin -> Main : consulter les statistiques
+Main -> Dashboard : calculerStatistiques()
+Dashboard --> Main : statistiques calculées
+
+Main -> Dashboard : afficherDashboard()
+Dashboard --> Admin : afficher nb étudiants, entreprises, offres, candidatures
+
+@enduml
