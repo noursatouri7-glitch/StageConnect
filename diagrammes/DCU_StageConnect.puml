@@ -1,0 +1,44 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor Admin
+actor Utilisateur
+
+rectangle "StageConnect" {
+
+  (Gérer utilisateurs) as GU
+  (Gérer offres de stage) as GOS
+
+  (S'inscrire) as INS
+  (Se connecter) as CON
+  (Rechercher un stage) as REC
+  (Réserver une place) as RES
+  (Payer réservation) as PAY
+  (Recevoir notification) as NOTIF
+
+  Admin --> GU
+  Admin --> GOS
+
+  Utilisateur --> INS
+  Utilisateur --> CON
+  Utilisateur --> REC
+  Utilisateur --> RES
+  Utilisateur --> PAY
+  Utilisateur --> NOTIF
+
+  RES .> CON : <<include>>
+  RES .> REC : <<include>>
+  PAY .> RES : <<include>>
+  NOTIF .> RES : <<extend>>
+
+  GU -[hidden]down- GOS
+  GOS -[hidden]down- INS
+  INS -[hidden]down- CON
+  CON -[hidden]down- REC
+  REC -[hidden]down- RES
+  RES -[hidden]down- PAY
+  PAY -[hidden]down- NOTIF
+}
+
+@enduml

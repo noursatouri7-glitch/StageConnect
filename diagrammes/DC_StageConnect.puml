@@ -1,0 +1,55 @@
+@startuml
+
+class Utilisateur {
+- nom : String
+- email : String
+- motDePasse : String
++ sInscrire()
++ seConnecter()
++ rechercherStage()
++ reserverPlace(offre : OffreStage)
+}
+
+class Admin {
++ gererUtilisateurs()
++ gererOffres()
+}
+
+class OffreStage {
+- id : int
+- titre : String
+- entreprise : String
+- placesDisponibles : int
++ afficherDetails()
++ decrementerPlaces()
+}
+
+class Reservation {
+- id : int
+- date : Date
+- statut : String
++ confirmer()
+}
+
+class Paiement {
+- montant : double
+- statut : String
++ effectuerPaiement()
+}
+
+class Notification {
+- message : String
++ envoyer()
+}
+
+' Relations principales
+Utilisateur "1" --> "*" Reservation
+OffreStage "1" --> "*" Reservation
+
+Reservation --> Paiement
+Reservation --> Notification
+
+Admin --> Utilisateur
+Admin --> OffreStage
+
+@enduml

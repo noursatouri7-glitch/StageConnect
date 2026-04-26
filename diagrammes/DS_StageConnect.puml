@@ -1,0 +1,39 @@
+@startuml
+
+actor Utilisateur
+participant "Système" as System
+participant OffreStage
+participant Reservation
+participant Paiement
+participant Notification
+
+== Connexion ==
+Utilisateur -> System : seConnecter()
+System --> Utilisateur : OK
+
+== Recherche ==
+Utilisateur -> System : rechercherStage()
+System --> Utilisateur : liste des offres
+
+== Réservation ==
+Utilisateur -> System : reserver(offre)
+System -> OffreStage : verifierDisponibilite()
+
+alt disponible
+OffreStage --> System : OK
+System -> OffreStage : decrementerPlaces()
+System -> Reservation : creerReservation()
+else non disponible
+OffreStage --> System : REFUS
+end
+
+== Paiement ==
+Utilisateur -> System : payer()
+System -> Paiement : effectuerPaiement()
+Paiement --> System : validé
+
+== Notification ==
+System -> Notification : envoyer()
+Notification --> Utilisateur : confirmation
+
+@enduml
