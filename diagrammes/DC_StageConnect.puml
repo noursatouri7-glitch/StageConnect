@@ -1,55 +1,136 @@
 @startuml
+title Diagramme de Classes - StageConnect
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+
+' =========================
+' Classes principales
+' =========================
 
 class Utilisateur {
-- nom : String
-- email : String
-- motDePasse : String
-+ sInscrire()
-+ seConnecter()
-+ rechercherStage()
-+ reserverPlace(offre : OffreStage)
+    - nom : String
+    - email : String
+    - motDePasse : String
+    - utilisateurs : List<Utilisateur>
+    + Utilisateur()
+    + Utilisateur(nom : String, email : String, motDePasse : String)
+    + sInscrire(nom : String, email : String, motDePasse : String) : boolean
+    + seConnecter(email : String, motDePasse : String) : Utilisateur
+    + getNom() : String
+    + getEmail() : String
+    + getMotDePasse() : String
+    + toString() : String
 }
 
-class Admin {
-+ gererUtilisateurs()
-+ gererOffres()
+class Etudiant {
+    - niveau : String
+    - specialite : String
+    - candidatures : List<Candidature>
+    + Etudiant()
+    + Etudiant(nom : String, email : String, motDePasse : String, niveau : String, specialite : String)
+    + ajouterCandidature(candidature : Candidature) : void
+    + afficherCandidatures() : void
+}
+
+class Administrateur {
+    + Administrateur()
+    + Administrateur(nom : String, email : String, motDePasse : String)
+    + afficherStatistiques(nbEtudiants : int, nbEntreprises : int, nbOffres : int, nbCandidatures : int) : void
+    + supprimerUtilisateur(utilisateur : Utilisateur) : void
+    + validerOffre(offre : OffreStage) : void
+}
+
+class Entreprise {
+    - nom : String
+    - email : String
+    - telephone : String
+    + Entreprise(nom : String, email : String, telephone : String)
+    + afficherEntreprise() : void
+    + publierOffre(gestion : GestionOffres, offre : OffreStage) : void
 }
 
 class OffreStage {
-- id : int
-- titre : String
-- entreprise : String
-- placesDisponibles : int
-+ afficherDetails()
-+ decrementerPlaces()
+    - id : int
+    - titre : String
+    - description : String
+    - lieu : String
+    - duree : int
+    - salaire : double
+    - candidatures : List<Candidature>
+    + OffreStage(id : int, titre : String, description : String, lieu : String, duree : int, salaire : double)
+    + getId() : int
+    + getTitre() : String
+    + setTitre(titre : String) : void
+    + getDescription() : String
+    + setDescription(description : String) : void
+    + getLieu() : String
+    + setLieu(lieu : String) : void
+    + getDuree() : int
+    + setDuree(duree : int) : void
+    + getSalaire() : double
+    + setSalaire(salaire : double) : void
+    + ajouterCandidature(candidature : Candidature) : void
+    + afficherOffre() : void
 }
 
-class Reservation {
-- id : int
-- date : Date
-- statut : String
-+ confirmer()
+class GestionOffres {
+    - listeOffres : ArrayList<OffreStage>
+    + GestionOffres()
+    + ajouterOffre(offre : OffreStage) : void
+    + afficherOffres() : void
+    + modifierOffre(id : int, nouveauTitre : String, nouveauLieu : String, nouvelleDuree : int, nouveauSalaire : double) : void
+    + supprimerOffre(id : int) : void
+    + rechercherParLieu(lieu : String) : void
 }
 
-class Paiement {
-- montant : double
-- statut : String
-+ effectuerPaiement()
+class Candidature {
+    - id : int
+    - dateCandidature : String
+    - statut : String
+    + Candidature(id : int, etudiant : Etudiant, offre : OffreStage)
+    + accepter() : void
+    + refuser() : void
+    + afficher() : void
+    + getStatut() : String
 }
 
-class Notification {
-- message : String
-+ envoyer()
+class TableauDeBordAdmin {
+    - nombreEtudiants : int
+    - nombreEntreprises : int
+    - nombreOffres : int
+    - nombreCandidatures : int
+    + calculerStatistiques() : void
+    + afficherDashboard() : void
 }
 
-' Relations principales
-Utilisateur "1" --> "*" Reservation
-OffreStage "1" --> "*" Reservation
+class Main {
+    + main(args : String[]) : void
+}
 
-Reservation --> Paiement
-Reservation --> Notification
+' =========================
+' Relations d'héritage
+' =========================
 
-Admin --> Utilisateur
-Admin --> OffreStage
+Utilisateur <|-- Etudiant : hérite
+Utilisateur <|-- Administrateur : hérite
+
+' =========================
+' Relations métier
+' =========================
+
+Entreprise "1" --> "0..*" OffreStage : publie
+GestionOffres "1" o-- "0..*" OffreStage : gère
+Etudiant "1" --> "0..*" Candidature : effectue
+OffreStage "1" --> "0..*" Candidature : reçoit
+Candidature "1" --> "1" Etudiant : concerne
+Candidature "1" --> "1" OffreStage : pour
+Administrateur "1" --> "1" TableauDeBordAdmin : consulte
+Administrateur "1" --> "0..*" Utilisateur : gère
+Administrateur "1" --> "0..*" OffreStage : valide
+Main ..> Utilisateur : teste authentification
+Main ..> GestionOffres : teste gestion offres
+Main ..> Candidature : teste candidature
+Main ..> TableauDeBordAdmin : teste dashboard
 
 @enduml
