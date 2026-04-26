@@ -1,0 +1,25 @@
+package com.stageconnect.models;
+
+public class Admin {
+
+    private String nom;
+
+    public Admin(String nom) {
+        this.nom = nom;
+    }
+
+    public void afficherMessage() {
+        System.out.println("Bienvenue Admin : " + nom);
+    }
+
+    public void afficherStatistiques(int nbEtudiants, int nbEntreprises, int nbOffres) {
+        System.out.println("=== Dashboard Admin ===");
+        System.out.println("Nombre d'étudiants : " + nbEtudiants);
+        System.out.println("Nombre d'entreprises : " + nbEntreprises);
+        System.out.println("Nombre d'offres : " + nbOffres);
+    }
+
+    public void supprimerUtilisateur(String nomUser) {
+        System.out.println("Utilisateur supprimé : " + nomUser);
+    }
+}                   
