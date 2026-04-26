@@ -1,25 +1,30 @@
-import java.util.ArrayList;
+package com.stageconnect.models;
 
-public class OffreStage {
+public class Candidature {
 
-    private String titre;
-    private Entreprise entreprise;
-    private ArrayList<Candidature> candidatures = new ArrayList<>();
+    private Etudiant etudiant;
+    private OffreStage offre;
+    private String statut;
 
-    public OffreStage(String titre, Entreprise entreprise) {
-        this.titre = titre;
-        this.entreprise = entreprise;
+    public Candidature(Etudiant etudiant, OffreStage offre) {
+        this.etudiant = etudiant;
+        this.offre = offre;
+        this.statut = "En attente";
     }
 
-    public String getTitre() {
-        return titre;
+    public void accepter() {
+        statut = "Acceptée";
     }
 
-    public void ajouterCandidature(Candidature c) {
-        candidatures.add(c);
+    public void refuser() {
+        statut = "Refusée";
     }
 
     public void afficher() {
-        System.out.println(« Offre: «  + titre + «  | Entreprise: «  + entreprise.nom);
+        System.out.println(etudiant.getNom() + " -> " + offre.getTitre() + " (" + statut + ")");
+    }
+
+    public String getStatut() {
+        return statut;
     }
 }
