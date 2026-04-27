@@ -40,7 +40,7 @@ Les étudiants rencontrent souvent des difficultés pour trouver des stages adap
 
 | Membre | Fonctionnalité |
 |---|---|
-| Loujayen Habbechi | Inscription et authentification |
+| Loujayen Haddouchi | Inscription et authentification |
 | Nour Satouri | Publication et gestion des offres de stage |
 | Yesmine Toumi | Recherche et filtrage des stages |
 | Montaha Ferchichi | Candidature et suivi des demandes |
@@ -171,7 +171,7 @@ Ensuite, chaque membre crée une Pull Request vers la branche `main`.
 
 | Initiales | Nom | Fonctionnalité |
 |---|---|---|
-| LH | Loujayen Habbechi | Inscription et authentification |
+| LH | Loujayen Haddouchi | Inscription et authentification |
 | NS | Nour Satouri | Publication et gestion des offres de stage |
 | YT | Yesmine Toumi | Recherche et filtrage des stages |
 | MF | Montaha Ferchichi | Candidature et suivi des demandes |
